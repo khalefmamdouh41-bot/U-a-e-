@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Car Driving Game on Google Maps</title>
+    <style>
+      #map { height: 100vh; width: 100vw; }
+      #car { 
+        position: absolute;
+        width: 40px; height: 40px;
+        background: url('https://img.icons8.com/emoji/48/car-emoji.png') no-repeat center;
+        pointer-events: none;
+        z-index: 10;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <div id="car"></div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
+    <script>
+      let map, carMarker, carPos = {lat: 25.2048, lng: 55.2708}; // دبي كمثال
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: carPos,
+          zoom: 16
+        });
+        carMarker = new google.maps.Marker({
+          position: carPos,
+          map: map,
+          icon: {
+            url: "https://img.icons8.com/emoji/48/car-emoji.png",
+            scaledSize: new google.maps.Size(40, 40),
+          }
+        });
+      }
+      window.initMap = initMap;
+      // حركة السيارة بالأسهم
+      document.addEventListener('keydown', function(e) {
+        let delta = 0.0005;
+        switch(e.key) {
+          case 'ArrowUp': carPos.lat += delta; break;
+          case 'ArrowDown': carPos.lat -= delta; break;
+          case 'ArrowLeft': carPos.lng -= delta; break;
+          case 'ArrowRight': carPos.lng += delta; break;
+        }
+        carMarker.setPosition(carPos);
+        map.panTo(carPos);
+      });
+      // بدء الخريطة بعد تحميل الصفحة
+      window.onload = () => initMap();
+    </script>
+  </body>
+</html>
+
+
